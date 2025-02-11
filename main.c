@@ -94,11 +94,6 @@ int main(int argc, char *argv[])
         printf("Failed to initialize!\n");
         return 1;
     }
-
-    if (!load_media()) {
-        printf("Failed to load media!\n");
-        return 1;
-    }
     
     while (event_loop())
         SDL_Delay(10);
