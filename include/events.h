@@ -2,7 +2,10 @@
 #define EVENTS_H
 
 #include <stdbool.h>
+#include <SDL3/SDL.h>
 
-bool process_events(SDL_Event event, bool *running);
+#include "structs.h"
+
+void process_events(SDL_Event event, struct program *game, bool *running);
 
 #endif

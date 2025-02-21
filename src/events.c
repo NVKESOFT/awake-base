@@ -1,21 +1,13 @@
 #include <stdbool.h>
-#include <SDL2/SDL.h>
+#include <SDL3/SDL.h>
 
-bool process_events(SDL_Event event, bool *running)
+#include "structs.h"
+
+void process_events(SDL_Event event, struct program *game, bool *running)
 {
-	// Process event by type
-	switch (event.type) {
-	case SDL_QUIT:
+	if (event.type == SDL_EVENT_QUIT || (event.type ==
+	                                     SDL_EVENT_KEY_DOWN &&
+	                                     event.key.scancode ==
+	                                     SDL_SCANCODE_ESCAPE))
 		*running = false;
-		break;
-	case SDL_KEYDOWN:
-		// Process keypresses
-		switch (event.key.keysym.scancode) {
-		case SDL_SCANCODE_ESCAPE:
-			*running = false;
-			break;
-		}
-		break;
-	}
-	return true;
 }

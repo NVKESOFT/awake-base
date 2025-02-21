@@ -1,9 +1,18 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-// SAFE SPACE FOR MACROS
 #define WINDOW_TITLE "AWAKE"
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+enum resolution {
+	SCREEN_WIDTH = 1280,
+	SCREEN_HEIGHT = 960
+};
+
+#define IMAGE_FLAGS IMG_INIT_PNG
+enum delay {
+	DELAY_ONE_FRAME = 16,
+	DELAY_TWO_FRAMES = 32,
+	DELAY_THREE_FRAMES = 48,
+	DELAY_FOUR_FRAMES = 64
+};
 
 #endif
