@@ -65,6 +65,8 @@ int main(int argc, char *argv[])
 		}
 		
 		apply_player_movement(&player);
+		player.collision = SDL_HasRectIntersectionFloat(&player.frame,
+		                                                &block.frame);
 
 		SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
 		SDL_RenderClear(game.renderer);

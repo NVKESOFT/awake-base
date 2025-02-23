@@ -2,7 +2,6 @@
 #include <SDL3/SDL.h>
 
 #include "structs.h"
-#include "structf.h"
 #include "defs.h"
 
 const float player_base_speed = 5.0f;
@@ -18,6 +17,7 @@ struct entity create_player(float x, float y, float w, float h)
 	p.frame.w = w;
 	p.frame.h = h;
 	p.movement_speed = player_base_speed;
+	p.collision = false;
 	return p;
 }
 
@@ -75,6 +75,9 @@ void apply_player_movement(struct entity *p)
 
 void render_player(SDL_Renderer *rnd, struct entity *p)
 {
-	SDL_SetRenderDrawColor(rnd, 210, 60, 40, 255);
+	if (p -> collision)
+		SDL_SetRenderDrawColor(rnd, 60, 210, 40, 255);
+	else
+		SDL_SetRenderDrawColor(rnd, 210, 60, 40, 255);
 	SDL_RenderRect(rnd, &p -> frame);
 }

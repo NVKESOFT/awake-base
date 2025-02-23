@@ -23,6 +23,7 @@ struct entity {
 	float movement_speed;
 	SDL_Texture *texture;
 	SDL_FRect frame;
+	bool collision;
 };
 
 struct solid_body {
