@@ -5,8 +5,9 @@
 
 #include "structs.h"
 
-void player_init(struct entity *player, float x, float y);
-void process_player_movement(SDL_Event event, struct entity *player);
-void apply_player_movement(struct entity *player);
+struct entity create_player(float x, float y, float w, float h);
+void process_player_movement(SDL_Event e, struct entity *p);
+void apply_player_movement(struct entity *p);
+void render_player(SDL_Renderer *rnd, struct entity *p);
 
 #endif

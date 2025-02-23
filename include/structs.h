@@ -1,6 +1,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#include <stdbool.h>
 #include <SDL3/SDL.h>
 
 /*
@@ -11,22 +12,23 @@ struct your_mom {
 };
 */
 
-struct dimensions {
+struct coords {
 	int x;
 	int y;
 };
 
 struct entity {
-	struct dimensions velocity;
+	struct coords velocity;
 	float position[2];
 	float movement_speed;
 	SDL_Texture *texture;
 	SDL_FRect frame;
 };
 
-struct program {
-	SDL_Window *window;
-	SDL_Renderer *renderer;
+struct solid_body {
+	float position[2];
+	SDL_Texture *texture;
+	SDL_FRect frame;
 };
 
 #endif

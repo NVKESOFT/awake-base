@@ -1,13 +1,10 @@
 #include <stdbool.h>
 #include <SDL3/SDL.h>
 
-#include "structs.h"
-
-void process_events(SDL_Event event, struct program *game, bool *running)
+void process_events(SDL_Event e, bool *running)
 {
-	if (event.type == SDL_EVENT_QUIT || (event.type ==
-	                                     SDL_EVENT_KEY_DOWN &&
-	                                     event.key.scancode ==
-	                                     SDL_SCANCODE_ESCAPE))
+	if (e.type == SDL_EVENT_QUIT || (e.type == SDL_EVENT_KEY_DOWN &&
+	                                 e.key.scancode ==
+	                                 SDL_SCANCODE_ESCAPE))
 		*running = false;
 }

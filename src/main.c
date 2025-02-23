@@ -6,6 +6,15 @@
 #include "defs.h"
 #include "events.h"
 #include "player.h"
+#include "block.h"
+
+#define WINDOW_TITLE "AWAKE"
+#define IMAGE_FLAGS IMG_INIT_PNG
+
+struct program {
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+};
 
 bool init(struct program *game)
 {
@@ -37,33 +46,32 @@ int main(int argc, char *argv[])
 {
 	struct program game;
 	memset(&game, 0, sizeof(struct program));
-	struct entity player;
-	memset(&player, 0, sizeof(struct entity));
 	
 	if (!init(&game)) {
 		SDL_LogInfo(SDL_LOG_CATEGORY_ERROR, "Couldn't initialize!");
 		return 1;
 	}
 	
-	player_init(&player, 100.0f, 100.0f);
+	struct entity player = create_player(100.f, 100.f, 100.f, 100.f);
+	struct solid_body block = create_block(300.f, 300.f, 100.f, 100.f);
+
+	bool running = true;
+	SDL_Event e;
 	
-	bool is_running = true;
-	SDL_Event event;
-	
-	while (is_running) {
-		while (SDL_PollEvent(&event)) {
-			process_events(event, &game, &is_running);
-			process_player_movement(event, &player);
+	while (running) {
+		while (SDL_PollEvent(&e)) {
+			process_events(e, &running);
+			process_player_movement(e, &player);
 		}
 		
 		apply_player_movement(&player);
-		
+
 		SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
 		SDL_RenderClear(game.renderer);
-		SDL_SetRenderDrawColor(game.renderer, 210, 60, 40, 255);
-		SDL_RenderRect(game.renderer, &player.frame);
+		render_player(game.renderer, &player);
+		render_block(game.renderer, &block);
 		SDL_RenderPresent(game.renderer);
-		
+
 		SDL_Delay(DELAY_ONE_FRAME);
 	}
 	

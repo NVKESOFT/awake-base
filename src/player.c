@@ -1,67 +1,80 @@
+#include <stdbool.h>
 #include <SDL3/SDL.h>
 
 #include "structs.h"
+#include "structf.h"
+#include "defs.h"
 
-void player_init(struct entity *player, float x, float y)
+const float player_base_speed = 5.0f;
+float player_speed_multiplier = 1.5f;
+
+struct entity create_player(float x, float y, float w, float h)
 {
-	player -> position[0] = x;
-	player -> position[1] = y;
-	player -> movement_speed = 5.0f;
-	player -> frame.w = 100;
-	player -> frame.h = 100;
+	struct entity p;
+	memset(&p, 0, sizeof(struct entity));
+
+	p.frame.x = p.position[X] = x;
+	p.frame.y = p.position[Y] = y;
+	p.frame.w = w;
+	p.frame.h = h;
+	p.movement_speed = player_base_speed;
+	return p;
 }
 
-void process_player_movement(SDL_Event event, struct entity *player)
+void process_player_movement(SDL_Event e, struct entity *p)
 {
-	if (event.type == SDL_EVENT_KEY_DOWN && !event.key.repeat)
-		switch (event.key.scancode) {
+	if (e.type == SDL_EVENT_KEY_DOWN && !e.key.repeat)
+		switch (e.key.scancode) {
 		case SDL_SCANCODE_W:
-			--player -> velocity.y;
+			--p -> velocity.y;
 			break;
 		case SDL_SCANCODE_A:
-			--player -> velocity.x;
+			--p -> velocity.x;
 			break;
 		case SDL_SCANCODE_S:
-			++player -> velocity.y;
+			++p -> velocity.y;
 			break;
 		case SDL_SCANCODE_D:
-			++player -> velocity.x;
+			++p -> velocity.x;
 			break;
 		case SDL_SCANCODE_LSHIFT:
-			player -> movement_speed *= 1.5f;
+			p -> movement_speed *= player_speed_multiplier;
 			break;
 		default:
 			break;
 		}
-	else if (event.type == SDL_EVENT_KEY_UP && !event.key.repeat)
-		switch (event.key.scancode) {
+	else if (e.type == SDL_EVENT_KEY_UP && !e.key.repeat)
+		switch (e.key.scancode) {
 		case SDL_SCANCODE_W:
-			++player -> velocity.y;
+			++p -> velocity.y;
 			break;
 		case SDL_SCANCODE_A:
-			++player -> velocity.x;
+			++p -> velocity.x;
 			break;
 		case SDL_SCANCODE_S:
-			--player -> velocity.y;
+			--p -> velocity.y;
 			break;
 		case SDL_SCANCODE_D:
-			--player -> velocity.x;
+			--p -> velocity.x;
 			break;
 		case SDL_SCANCODE_LSHIFT:
-			player -> movement_speed = 5.0f;
+			p -> movement_speed = player_base_speed;
 			break;
 		default:
 			break;
 		}
 }
 
-void apply_player_movement(struct entity *player)
+void apply_player_movement(struct entity *p)
 {
-	player -> position[0] += player -> velocity.x *
-		player -> movement_speed;
-	player -> position[1] += player -> velocity.y *
-		player -> movement_speed;
-	
-	player -> frame.x = player -> position[0];
-	player -> frame.y = player -> position[1];
+	p -> frame.x = p -> position[X] += p -> velocity.x *
+		p -> movement_speed;
+	p -> frame.y = p -> position[Y] += p -> velocity.y *
+		p -> movement_speed;
+}
+
+void render_player(SDL_Renderer *rnd, struct entity *p)
+{
+	SDL_SetRenderDrawColor(rnd, 210, 60, 40, 255);
+	SDL_RenderRect(rnd, &p -> frame);
 }
