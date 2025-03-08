@@ -1,23 +1,44 @@
-#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <SDL3/SDL.h>
 
-#include "structs.h"
-#include "defs.h"
+#include "block.h"
+#include "meth.h"
 
-struct solid_body create_block(float x, float y, float w, float h)
+struct solid_body {
+	mth_vec2f position;
+	SDL_Texture *texture;
+	SDL_FRect frame;
+};
+
+solid_body *sb_create(float x, float y, float w, float h)
 {
-	struct solid_body b;
-	memset(&b, 0, sizeof(struct solid_body));
+	solid_body *sb = calloc(1, sizeof(solid_body));
 
-	b.frame.x = b.position[X] = x;
-	b.frame.y = b.position[Y] = y;
-	b.frame.w = w;
-	b.frame.h = h;
-	return b;
+	if (!sb) {
+		fprintf(stderr, "Failed to allocate solid_body!");
+		exit(1);
+	}
+	sb -> frame.x = sb -> position.x = x;
+	sb -> frame.y = sb -> position.y = y;
+	sb -> frame.w = w;
+	sb -> frame.h = h;
+	return sb;
 }
 
-void render_block(SDL_Renderer *rnd, struct solid_body *b)
+void sb_destroy(solid_body **sb)
+{
+	free(*sb);
+	*sb = NULL;
+}
+
+SDL_FRect *sb_get_frame(solid_body *sb)
+{
+	return &sb -> frame;
+}
+
+void sb_render(SDL_Renderer *rnd, solid_body *sb)
 {
 	SDL_SetRenderDrawColor(rnd, 255, 255, 255, 255);
-	SDL_RenderRect(rnd, &b -> frame);
+	SDL_RenderRect(rnd, &sb -> frame);
 }

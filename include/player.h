@@ -3,11 +3,15 @@
 
 #include <SDL3/SDL.h>
 
-#include "structs.h"
+typedef struct player player;
 
-struct entity create_player(float x, float y, float w, float h);
-void process_player_movement(SDL_Event e, struct entity *p);
-void apply_player_movement(struct entity *p);
-void render_player(SDL_Renderer *rnd, struct entity *p);
+player *create_player(float x, float y, float w, float h);
+void destroy_player(player **pl);
+
+SDL_FRect *player_get_frame(player *pl);
+void player_collided_with(player *pl, SDL_FRect *col);
+void process_player_movement(SDL_Event *e, player *pl);
+void apply_player_movement(player *pl);
+void render_player(SDL_Renderer *rnd, player *pl);
 
 #endif

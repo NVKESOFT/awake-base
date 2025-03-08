@@ -2,14 +2,12 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 // Jason Hall is a cuck
-#include "structs.h"
 #include "defs.h"
 #include "events.h"
 #include "player.h"
 #include "block.h"
 
 #define WINDOW_TITLE "AWAKE"
-#define IMAGE_FLAGS IMG_INIT_PNG
 
 struct program {
 	SDL_Window *window;
@@ -52,31 +50,31 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
-	struct entity player = create_player(100.f, 100.f, 100.f, 100.f);
-	struct solid_body block = create_block(300.f, 300.f, 100.f, 100.f);
+	player *Alex = create_player(100.f, 100.f, 100.f, 100.f);
+	solid_body *block = sb_create(300.f, 300.f, 100.f, 100.f);
 
 	bool running = true;
 	SDL_Event e;
 	
 	while (running) {
 		while (SDL_PollEvent(&e)) {
-			process_events(e, &running);
-			process_player_movement(e, &player);
+			process_events(&e, &running);
+			process_player_movement(&e, Alex);
 		}
 		
-		apply_player_movement(&player);
-		player.collision = SDL_HasRectIntersectionFloat(&player.frame,
-		                                                &block.frame);
+		apply_player_movement(Alex);
+		player_collided_with(Alex, sb_get_frame(block));
 
 		SDL_SetRenderDrawColor(game.renderer, 0, 0, 0, 255);
 		SDL_RenderClear(game.renderer);
-		render_player(game.renderer, &player);
-		render_block(game.renderer, &block);
+		render_player(game.renderer, Alex);
+		sb_render(game.renderer, block);
 		SDL_RenderPresent(game.renderer);
 
 		SDL_Delay(DELAY_ONE_FRAME);
 	}
 	
+	destroy_player(&Alex);
+	sb_destroy(&block);
 	kill(&game);
-	return 0;
 }
