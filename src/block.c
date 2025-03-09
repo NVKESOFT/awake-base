@@ -36,9 +36,3 @@ SDL_FRect *sb_get_frame(solid_body *sb)
 {
 	return &sb -> frame;
 }
-
-void sb_render(SDL_Renderer *rnd, solid_body *sb)
-{
-	SDL_SetRenderDrawColor(rnd, 255, 255, 255, 255);
-	SDL_RenderRect(rnd, &sb -> frame);
-}

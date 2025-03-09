@@ -12,6 +12,6 @@ SDL_FRect *player_get_frame(player *pl);
 void player_collided_with(player *pl, SDL_FRect *col);
 void process_player_movement(SDL_Event *e, player *pl);
 void apply_player_movement(player *pl);
-void render_player(SDL_Renderer *rnd, player *pl);
+void player_change_color(SDL_Renderer *rnd, player *pl);
 
 #endif

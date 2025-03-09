@@ -112,11 +112,10 @@ void apply_player_movement(player *pl)
 		pl -> movement_speed;
 }
 
-void render_player(SDL_Renderer *rnd, player *pl)
+void player_change_color(SDL_Renderer *rnd, player *pl)
 {
 	if (pl -> collision)
 		SDL_SetRenderDrawColor(rnd, 60, 210, 40, 255);
 	else
 		SDL_SetRenderDrawColor(rnd, 210, 60, 40, 255);
-	SDL_RenderRect(rnd, &pl -> frame);
 }
